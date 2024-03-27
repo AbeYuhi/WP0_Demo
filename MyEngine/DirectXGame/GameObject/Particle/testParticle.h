@@ -15,9 +15,12 @@ public:
 
 	void Draw();
 
+	void EmitterDraw();
+
 private:
 	std::unique_ptr<PlaneParticle> particle0_;
 	std::unique_ptr<PlaneParticle> particle1_;
 
 	Vector3 pos;
+	Vector3 scale;
 };

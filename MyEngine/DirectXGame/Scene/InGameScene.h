@@ -65,17 +65,8 @@ private:
 	std::shared_ptr<Model> yukariModel_;
 	RenderItem yukariModelInfo_;
 
-	std::shared_ptr<Model> groundModel_;
-	RenderItem groundModelInfo_;
-
 	std::shared_ptr<Model> cubeModel_;
 	RenderItem cubeModelInfo_;
-
-	std::shared_ptr<Model> testModel_;
-	RenderItem testModelInfo_;
-
-	std::shared_ptr<Sprite> sprite_;
-	SpriteItem spriteInfo_;
 
 	//サウンド
 	uint32_t soundHandle_;

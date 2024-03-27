@@ -33,9 +33,6 @@ struct RenderItem {
 	}
 
 	void UpdateGltf(Mesh mesh, int index) {
-		if (index >= 10) {
-			assert(false);
-		}
 
 		if (mesh.name == animationInfo_.rootNode.name) {		
 			meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;

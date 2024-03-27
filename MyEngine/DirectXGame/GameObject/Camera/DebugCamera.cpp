@@ -19,7 +19,7 @@ void DebugCamera::Initialize() {
 	nearClip_ = 0.1f;
 	farClip_ = 100.0f;
 	fovY_ = 0.45f;
-	isMove_ = false;
+	isMove_ = true;
 }
 
 void DebugCamera::Update() {

@@ -46,10 +46,6 @@ void InGameScene::Initialize() {
 	//ブレンドモード
 	blendMode_ = kBlendModeNormal;
 
-	//画像読み込み
-	monsterBallHandle_ = TextureManager::Load("monsterBall.png");
-	fenceHandle_ = TextureManager::Load("fence.png");
-
 	//ゲームオブジェクト
 	testParticle1_ = std::make_unique<TestParticle>();
 	testParticle1_->Initialize();
@@ -59,18 +55,8 @@ void InGameScene::Initialize() {
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 	yukariModelInfo_.worldTransform_.data_.translate_.y = 1;
 
-	groundModel_ = Model::Create("planeGltf", "plane.gltf");
-	groundModelInfo_.Initialize();
-	groundModelInfo_.materialInfo_.material_->enableLightint = true;
-
 	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
 	cubeModelInfo_.Initialize();
-
-	//testModel_ = Model::Create("test", "test.gltf");
-	testModelInfo_.Initialize();
-
-	sprite_ = Sprite::Create();
-	spriteInfo_.Initialize(uvCheckerHandle_);
 }
 
 void InGameScene::Update() {
@@ -100,6 +86,10 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
+	if (input_->IsTriggerKey(DIK_SPACE)) {
+		sceneNo_ = TITLE;
+	}
+
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
@@ -107,22 +97,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("rotate", &yukariModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &yukariModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &yukariModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("groundModel")) {
-		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &groundModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &groundModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool b = 0;
-		if (groundModelInfo_.materialInfo_.material_->isSpecularReflection == 0) {
-			b = false;
-		}
-		else {
-			b = true;
-		}
-		ImGui::Checkbox("isSpecularReflection", &b);
-		groundModelInfo_.materialInfo_.material_->isSpecularReflection = b;
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("cubeModel")) {
@@ -138,25 +112,6 @@ void InGameScene::Update() {
 
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("testModel")) {
-		ImGui::SliderFloat3("pos", &testModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &testModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &testModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::Checkbox("isAnimation", &testModelInfo_.animationInfo_.isAnimation);
-		for (int index = 0; index < testModel_->GetAnimationNum(); index++) {
-			if (ImGui::Button(testModel_->GetAnimationName(index).c_str())) {
-				testModelInfo_.animationInfo_.name = testModel_->GetAnimationName(index);
-			}
-		}
-
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("sprite")) {
-		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, 0, 1280);
-		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &spriteInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::EndTabItem();
-	}
 	ImGui::EndTabBar();
 
 	ImGui::Begin("BlendMode");
@@ -167,10 +122,7 @@ void InGameScene::Update() {
 #endif // _DEBUG
 
 	yukariModelInfo_.Update();
-	groundModelInfo_.Update();
 	cubeModelInfo_.Update();
-	testModelInfo_.Update();
-	spriteInfo_.Update();
 }
 
 void InGameScene::Draw() {
@@ -191,20 +143,21 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-	//sprite_->Draw(spriteInfo_);
+
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	//yukariModel_->Draw(yukariModelInfo_);
-	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
+	yukariModel_->Draw(yukariModelInfo_);
 	cubeModel_->Draw(cubeModelInfo_);
-	//testModel_->Draw(testModelInfo_);
+	testParticle1_->EmitterDraw();
 
 	///オブジェクトの描画終了
 
 	///パーティクルの描画
+
+	testParticle1_->Draw();
 
 
 	///パーティクルの描画終了

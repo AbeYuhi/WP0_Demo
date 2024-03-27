@@ -66,6 +66,7 @@ public: //ゲッターセッター
 	inline void SetIsPopParticle(bool isPopParticle) { isPopParticle_ = isPopParticle; }
 	inline void SetTextureHandle(uint32_t textureHandle) { textureHandle_ = textureHandle; }
 	inline void SetEmitterPos(Vector3 pos) { emitter_.transform.translate_ = pos; }
+	inline void SetEmitterScale(Vector3 scale) { emitter_.transform.scale_ = scale; }
 
 protected: //メンバ変数
 	//乱数マネージャー

@@ -47,12 +47,9 @@ void SpriteCamera::Update() {
 		}
 
 		if (input->IsMousePush(2)) {
-			ImVec2 mouseAmount;
-			mouseAmount.x = input->GetMouseMovement().x;
-			mouseAmount.y = input->GetMouseMovement().y;
 
-			cameraVelocity.x += -mouseAmount.x * 0.05f;
-			cameraVelocity.y += mouseAmount.y * 0.05f;
+			cameraVelocity.x += -input->GetMouseMovement().x * 0.8f;
+			cameraVelocity.y += -input->GetMouseMovement().y * 0.8f;
 		}
 
 		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);
